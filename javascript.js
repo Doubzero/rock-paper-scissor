@@ -1,11 +1,14 @@
+let playerScore = 0;
+let compScore = 0;
+
 function getComputerChoice() {
-  const compChoice = ["Rock", "Paper", "Scissor"];
+  let compChoice = ["rock", "paper", "scissor"];
   const randomComputerChoice = Math.floor(Math.random() * compChoice.length);
-  let item = compChoice[randomComputerChoice];
+  const item = compChoice[randomComputerChoice];
   return item;
 }
 function playRound(playerSelection, computerSelection) {
-  if (computerSelection == "paper" && playerSelection == "rock") {
+  if (computerSelection == "paper" && playerSelection === "rock") {
     compScore++;
     return "You Lose!, Paper Beats Rock";
   } else if (computerSelection == "rock" && playerSelection == "scissor") {
@@ -17,9 +20,36 @@ function playRound(playerSelection, computerSelection) {
   } else if (computerSelection === playerSelection) {
     return "Draw";
   } else {
-    console.log(
-      `You win! You chose ${playerSelection} and the computer chose ${computerSelection}`
-    );
     playerScore++;
+    return `You win! You chose ${playerSelection} and the computer chose ${computerSelection}`;
   }
 }
+
+function getPlayerChoice() {
+  let choicePlayer = prompt("Enter Rock, Paper Or Scissor").toLowerCase();
+  return choicePlayer;
+}
+function game() {
+  console.log(playRound(getPlayerChoice(), getComputerChoice()));
+  console.log(playRound(getPlayerChoice(), getComputerChoice()));
+  console.log(playRound(getPlayerChoice(), getComputerChoice()));
+  console.log(playRound(getPlayerChoice(), getComputerChoice()));
+  console.log(playRound(getPlayerChoice(), getComputerChoice()));
+
+  if (playerScore == 5) {
+    finalScore();
+    return "You win the game!!";
+  } else if (compScore == 5) {
+    finalScore();
+    return "You lose the game!!";
+  } else {
+    finalScore();
+    return "Draw";
+  }
+}
+function finalScore() {
+  console.log(
+    `The Final score is ${playerScore} for player One and ${compScore} for computer`
+  );
+}
+game();
