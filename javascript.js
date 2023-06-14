@@ -1,5 +1,7 @@
 let playerScore = 0;
 let compScore = 0;
+let update = "";
+const buttons = document.querySelectorAll("input");
 
 function getComputerChoice() {
   let compChoice = ["rock", "paper", "scissor"];
@@ -7,49 +9,43 @@ function getComputerChoice() {
   const item = compChoice[randomComputerChoice];
   return item;
 }
-function playRound(playerSelection, computerSelection) {
-  if (computerSelection == "paper" && playerSelection === "rock") {
-    compScore++;
-    return "You Lose!, Paper Beats Rock";
-  } else if (computerSelection == "rock" && playerSelection == "scissor") {
-    compScore++;
-    return "You Lose!, Rock beats Scissor";
-  } else if (computerSelection == "scissor" && playerSelection == "paper") {
-    compScore++;
-    return "You Lose!, Scissor Beats Paper";
-  } else if (computerSelection === playerSelection) {
-    return "Draw";
-  } else {
+
+function playRound(playerSelection) {
+  let compChoice = getComputerChoice();
+  let result = "";
+  if (
+    (playerSelection == "rock" && compChoice == "scissor") ||
+    (playerSelection == "paper" && compChoice == "rock") ||
+    (playerSelection == "scissor" && compChoice == "paper")
+  )
     playerScore++;
-    return `You win! You chose ${playerSelection} and the computer chose ${computerSelection}`;
-  }
-}
-
-function getPlayerChoice() {
-  let choicePlayer = prompt("Enter Rock, Paper Or Scissor").toLowerCase();
-  return choicePlayer;
-}
-function game() {
-  console.log(playRound(getPlayerChoice(), getComputerChoice()));
-  console.log(playRound(getPlayerChoice(), getComputerChoice()));
-  console.log(playRound(getPlayerChoice(), getComputerChoice()));
-  console.log(playRound(getPlayerChoice(), getComputerChoice()));
-  console.log(playRound(getPlayerChoice(), getComputerChoice()));
-
+  result = `YOU WIN THE ROUND! Current Score: Computer: ${compScore} Player-score: ${playerScore}`;
   if (playerScore == 5) {
-    finalScore();
-    return "You win the game!!";
-  } else if (compScore == 5) {
-    finalScore();
-    return "You lose the game!!";
+    result =
+      "You win the Game!!!" +
+      "Final Score:" +
+      " " +
+      "Computer Score:" +
+      " " +
+      compScore +
+      "Player Score:" +
+      " " +
+      playerScore;
+  } else if (playerSelection == compChoice) {
+    result = `"Tie; No Change in Score Current Score: Computer: ${compScore} Player-score: ${playerScore}"`;
   } else {
-    finalScore();
-    return "Draw";
+    compScore++;
+    result = `You lose this round. Current Score: Computer: ${compScore} Player-score: ${playerScore}`;
+    if (compScore == 5) {
+      result = `Computer wins the game!! Try again Current Score: Computer: ${compScore} Player-score: ${playerScore}`;
+    }
   }
+  document.getElementById("result").innerHTML = result;
 }
-function finalScore() {
-  console.log(
-    `The Final score is ${playerScore} for player One and ${compScore} for computer`
-  );
-}
-game();
+
+//player choice
+buttons.forEach((button) => {
+  button.addEventListener("click", function () {
+    playRound(button.value);
+  });
+});
